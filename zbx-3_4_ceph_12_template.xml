@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <zabbix_export>
     <version>3.4</version>
-    <date>2017-12-01T13:00:08Z</date>
+    <date>2017-12-01T17:52:47Z</date>
     <groups>
         <group>
             <name>Templates</name>
@@ -700,7 +700,7 @@ Full cluster issues usually arise when testing how Ceph handles an OSD failure o
                     <type>0</type>
                     <snmp_community/>
                     <snmp_oid/>
-                    <key>ceph.health</key>
+                    <key>ceph.health[health,{HOST.HOST}]</key>
                     <delay>30s</delay>
                     <history>90d</history>
                     <trends>365d</trends>
@@ -2069,7 +2069,7 @@ Full cluster issues usually arise when testing how Ceph handles an OSD failure o
                     <type>0</type>
                     <snmp_community/>
                     <snmp_oid/>
-                    <key>ceph-mon-discovery</key>
+                    <key>ceph-mon-discovery[mons,{HOST.HOST}]</key>
                     <delay>1m</delay>
                     <status>0</status>
                     <allowed_hosts/>
@@ -2151,7 +2151,7 @@ Full cluster issues usually arise when testing how Ceph handles an OSD failure o
                     <type>0</type>
                     <snmp_community/>
                     <snmp_oid/>
-                    <key>ceph-osd-discovery</key>
+                    <key>ceph-osd-discovery[osds,{HOST.HOST}]</key>
                     <delay>1m</delay>
                     <status>0</status>
                     <allowed_hosts/>
@@ -2275,7 +2275,7 @@ Full cluster issues usually arise when testing how Ceph handles an OSD failure o
                     <type>0</type>
                     <snmp_community/>
                     <snmp_oid/>
-                    <key>ceph-pools-discovery</key>
+                    <key>ceph-pools-discovery[pools,{HOST.HOST}]</key>
                     <delay>1m</delay>
                     <status>0</status>
                     <allowed_hosts/>

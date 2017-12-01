@@ -1,0 +1,6 @@
+Server=10.10.10.111
+Hostname=ceph_host_control
+ListenIP=10.10.10.10
+LogFile=/var/log/zabbix-agent/zabbix_agentd.log
+Include=/etc/zabbix/zabbix_agentd.conf.d/*.conf
+ServerActive=10.10.10.111

@@ -23,8 +23,8 @@ case $1 in
       awk '
         BEGIN{ print "{\"data\":[" }
         {
-          if(NR!=1){ printf "," }
           if($1~/^osd/){
+            if(NR!=1){ printf "," }
             print "{ \"{#OSD}\":\""$1"\" }"
             print "'$HOSTNAME' ceph.osdspaceavail["$1"] "$2 >"'${TMPS}'"
           }else{

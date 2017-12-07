@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <zabbix_export>
     <version>3.4</version>
-    <date>2017-12-01T17:52:47Z</date>
+    <date>2017-12-07T10:49:23Z</date>
     <groups>
         <group>
             <name>Templates</name>
@@ -9,7 +9,7 @@
     </groups>
     <templates>
         <template>
-            <template>Template_Ceph</template>
+            <template>Template Ceph</template>
             <name>Template Ceph</name>
             <description/>
             <groups>
@@ -700,7 +700,7 @@ Full cluster issues usually arise when testing how Ceph handles an OSD failure o
                     <type>0</type>
                     <snmp_community/>
                     <snmp_oid/>
-                    <key>ceph.health[health,{HOST.HOST}]</key>
+                    <key>ceph.health[{$CLUSTER_NAME},health,{HOST.HOST}]</key>
                     <delay>30s</delay>
                     <history>90d</history>
                     <trends>365d</trends>
@@ -2069,7 +2069,7 @@ Full cluster issues usually arise when testing how Ceph handles an OSD failure o
                     <type>0</type>
                     <snmp_community/>
                     <snmp_oid/>
-                    <key>ceph-mon-discovery[mons,{HOST.HOST}]</key>
+                    <key>ceph-mon-discovery[{$CLUSTER_NAME},mons,{HOST.HOST}]</key>
                     <delay>1m</delay>
                     <status>0</status>
                     <allowed_hosts/>
@@ -2151,7 +2151,7 @@ Full cluster issues usually arise when testing how Ceph handles an OSD failure o
                     <type>0</type>
                     <snmp_community/>
                     <snmp_oid/>
-                    <key>ceph-osd-discovery[osds,{HOST.HOST}]</key>
+                    <key>ceph-osd-discovery[{$CLUSTER_NAME},osds,{HOST.HOST}]</key>
                     <delay>1m</delay>
                     <status>0</status>
                     <allowed_hosts/>
@@ -2275,7 +2275,7 @@ Full cluster issues usually arise when testing how Ceph handles an OSD failure o
                     <type>0</type>
                     <snmp_community/>
                     <snmp_oid/>
-                    <key>ceph-pools-discovery[pools,{HOST.HOST}]</key>
+                    <key>ceph-pools-discovery[{$CLUSTER_NAME},pools,{HOST.HOST}]</key>
                     <delay>1m</delay>
                     <status>0</status>
                     <allowed_hosts/>
@@ -2347,7 +2347,7 @@ Full cluster issues usually arise when testing how Ceph handles an OSD failure o
                     </item_prototypes>
                     <trigger_prototypes>
                         <trigger_prototype>
-                            <expression>{Template_Ceph:ceph.poolspaceavail[{#POOL}].last()}&lt;{$SPACEAVAIL_POOL_HIGH}</expression>
+                            <expression>{Template Ceph:ceph.poolspaceavail[{#POOL}].last()}&lt;{$SPACEAVAIL_POOL_HIGH}</expression>
                             <recovery_mode>0</recovery_mode>
                             <recovery_expression/>
                             <name>Ceph Cluster: {#POOL} : Space Available is less than {$SPACEAVAIL_POOL_HIGH}</name>
@@ -2370,6 +2370,10 @@ Full cluster issues usually arise when testing how Ceph handles an OSD failure o
             </discovery_rules>
             <httptests/>
             <macros>
+                <macro>
+                    <macro>{$CLUSTER_NAME}</macro>
+                    <value>ceph</value>
+                </macro>
                 <macro>
                     <macro>{$FULLRATIO}</macro>
                     <value>95</value>
@@ -2397,7 +2401,7 @@ Full cluster issues usually arise when testing how Ceph handles an OSD failure o
     </templates>
     <triggers>
         <trigger>
-            <expression>{Template_Ceph:ceph.degraded.last(0)}&gt;0</expression>
+            <expression>{Template Ceph:ceph.degraded.last(0)}&gt;0</expression>
             <recovery_mode>0</recovery_mode>
             <recovery_expression/>
             <name>Ceph cluster has degraded PGs</name>
@@ -2413,7 +2417,7 @@ Full cluster issues usually arise when testing how Ceph handles an OSD failure o
             <tags/>
         </trigger>
         <trigger>
-            <expression>{Template_Ceph:ceph.down.last(0)}&gt;0</expression>
+            <expression>{Template Ceph:ceph.down.last(0)}&gt;0</expression>
             <recovery_mode>0</recovery_mode>
             <recovery_expression/>
             <name>Ceph cluster has down PGs</name>
@@ -2429,7 +2433,7 @@ Full cluster issues usually arise when testing how Ceph handles an OSD failure o
             <tags/>
         </trigger>
         <trigger>
-            <expression>{Template_Ceph:ceph.spaceavail.last()}/{Template_Ceph:ceph.spacetotal.last()}&lt;{$SPACEAVAIL_HIGH}</expression>
+            <expression>{Template Ceph:ceph.spaceavail.last()}/{Template Ceph:ceph.spacetotal.last()}&lt;{$SPACEAVAIL_HIGH}</expression>
             <recovery_mode>0</recovery_mode>
             <recovery_expression/>
             <name>Ceph Cluster SpaceAvail is less than 5%</name>
@@ -2445,7 +2449,7 @@ Full cluster issues usually arise when testing how Ceph handles an OSD failure o
             <tags/>
         </trigger>
         <trigger>
-            <expression>{Template_Ceph:ceph.spaceavail.last()}/{Template_Ceph:ceph.spacetotal.last()}&lt;{$SPACEAVAIL_AVERAGE}</expression>
+            <expression>{Template Ceph:ceph.spaceavail.last()}/{Template Ceph:ceph.spacetotal.last()}&lt;{$SPACEAVAIL_AVERAGE}</expression>
             <recovery_mode>0</recovery_mode>
             <recovery_expression/>
             <name>Ceph Cluster SpaceAvail is less than 10%</name>
@@ -2461,7 +2465,7 @@ Full cluster issues usually arise when testing how Ceph handles an OSD failure o
             <tags/>
         </trigger>
         <trigger>
-            <expression>{Template_Ceph:ceph.spaceavail.last()}/{Template_Ceph:ceph.spacetotal.last()}&lt;{$SPACEAVAIL_WARNING}</expression>
+            <expression>{Template Ceph:ceph.spaceavail.last()}/{Template Ceph:ceph.spacetotal.last()}&lt;{$SPACEAVAIL_WARNING}</expression>
             <recovery_mode>0</recovery_mode>
             <recovery_expression/>
             <name>Ceph Cluster SpaceAvail is less than 15%</name>
@@ -2477,7 +2481,7 @@ Full cluster issues usually arise when testing how Ceph handles an OSD failure o
             <tags/>
         </trigger>
         <trigger>
-            <expression>{Template_Ceph:ceph.spaceavail.timeleft(86400,,0)}&lt;1h</expression>
+            <expression>{Template Ceph:ceph.spaceavail.timeleft(86400,,0)}&lt;1h</expression>
             <recovery_mode>0</recovery_mode>
             <recovery_expression/>
             <name>Ceph Cluster Space timeleft is less than a day</name>
@@ -2492,14 +2496,14 @@ Full cluster issues usually arise when testing how Ceph handles an OSD failure o
             <dependencies>
                 <dependency>
                     <name>Ceph Cluster Space timeleft is less than a hour</name>
-                    <expression>{Template_Ceph:ceph.spaceavail.timeleft(3600,,0)}&lt;1h</expression>
+                    <expression>{Template Ceph:ceph.spaceavail.timeleft(3600,,0)}&lt;1h</expression>
                     <recovery_expression/>
                 </dependency>
             </dependencies>
             <tags/>
         </trigger>
         <trigger>
-            <expression>{Template_Ceph:ceph.spaceavail.timeleft(3600,,0)}&lt;1h</expression>
+            <expression>{Template Ceph:ceph.spaceavail.timeleft(3600,,0)}&lt;1h</expression>
             <recovery_mode>0</recovery_mode>
             <recovery_expression/>
             <name>Ceph Cluster Space timeleft is less than a hour</name>
@@ -2515,7 +2519,7 @@ Full cluster issues usually arise when testing how Ceph handles an OSD failure o
             <tags/>
         </trigger>
         <trigger>
-            <expression>{Template_Ceph:ceph.spaceavail.timeleft(604800,,0)}&lt;1w</expression>
+            <expression>{Template Ceph:ceph.spaceavail.timeleft(604800,,0)}&lt;1w</expression>
             <recovery_mode>0</recovery_mode>
             <recovery_expression/>
             <name>Ceph Cluster Space timeleft is less than a week</name>
@@ -2530,19 +2534,19 @@ Full cluster issues usually arise when testing how Ceph handles an OSD failure o
             <dependencies>
                 <dependency>
                     <name>Ceph Cluster Space timeleft is less than a hour</name>
-                    <expression>{Template_Ceph:ceph.spaceavail.timeleft(3600,,0)}&lt;1h</expression>
+                    <expression>{Template Ceph:ceph.spaceavail.timeleft(3600,,0)}&lt;1h</expression>
                     <recovery_expression/>
                 </dependency>
                 <dependency>
                     <name>Ceph Cluster Used Space will reach FullRatio Mark less than in a day</name>
-                    <expression>{Template_Ceph:ceph.fullratio.timeleft(86400,,0)}&lt;1d</expression>
+                    <expression>{Template Ceph:ceph.fullratio.timeleft(86400,,0)}&lt;1d</expression>
                     <recovery_expression/>
                 </dependency>
             </dependencies>
             <tags/>
         </trigger>
         <trigger>
-            <expression>{Template_Ceph:ceph.spaceavail.timeleft(2592000,,0)}&lt;30d</expression>
+            <expression>{Template Ceph:ceph.spaceavail.timeleft(2592000,,0)}&lt;30d</expression>
             <recovery_mode>0</recovery_mode>
             <recovery_expression/>
             <name>Ceph Cluster Space timeleft is less than a week</name>
@@ -2557,24 +2561,24 @@ Full cluster issues usually arise when testing how Ceph handles an OSD failure o
             <dependencies>
                 <dependency>
                     <name>Ceph Cluster Space timeleft is less than a hour</name>
-                    <expression>{Template_Ceph:ceph.spaceavail.timeleft(3600,,0)}&lt;1h</expression>
+                    <expression>{Template Ceph:ceph.spaceavail.timeleft(3600,,0)}&lt;1h</expression>
                     <recovery_expression/>
                 </dependency>
                 <dependency>
                     <name>Ceph Cluster Space timeleft is less than a week</name>
-                    <expression>{Template_Ceph:ceph.spaceavail.timeleft(604800,,0)}&lt;1w</expression>
+                    <expression>{Template Ceph:ceph.spaceavail.timeleft(604800,,0)}&lt;1w</expression>
                     <recovery_expression/>
                 </dependency>
                 <dependency>
                     <name>Ceph Cluster Used Space will reach FullRatio Mark less than in a day</name>
-                    <expression>{Template_Ceph:ceph.fullratio.timeleft(86400,,0)}&lt;1d</expression>
+                    <expression>{Template Ceph:ceph.fullratio.timeleft(86400,,0)}&lt;1d</expression>
                     <recovery_expression/>
                 </dependency>
             </dependencies>
             <tags/>
         </trigger>
         <trigger>
-            <expression>{Template_Ceph:ceph.fullratio.timeleft(86400,,0)}&lt;1d</expression>
+            <expression>{Template Ceph:ceph.fullratio.timeleft(86400,,0)}&lt;1d</expression>
             <recovery_mode>0</recovery_mode>
             <recovery_expression/>
             <name>Ceph Cluster Used Space will reach FullRatio Mark less than in a day</name>
@@ -2589,14 +2593,14 @@ Full cluster issues usually arise when testing how Ceph handles an OSD failure o
             <dependencies>
                 <dependency>
                     <name>Ceph Cluster Used Space will reach FullRatio Mark less than in an hour</name>
-                    <expression>{Template_Ceph:ceph.fullratio.timeleft(3600,,0)}&lt;1h</expression>
+                    <expression>{Template Ceph:ceph.fullratio.timeleft(3600,,0)}&lt;1h</expression>
                     <recovery_expression/>
                 </dependency>
             </dependencies>
             <tags/>
         </trigger>
         <trigger>
-            <expression>{Template_Ceph:ceph.fullratio.timeleft(3600,,0)}&lt;1h</expression>
+            <expression>{Template Ceph:ceph.fullratio.timeleft(3600,,0)}&lt;1h</expression>
             <recovery_mode>0</recovery_mode>
             <recovery_expression/>
             <name>Ceph Cluster Used Space will reach FullRatio Mark less than in an hour</name>
@@ -2612,7 +2616,7 @@ Full cluster issues usually arise when testing how Ceph handles an OSD failure o
             <tags/>
         </trigger>
         <trigger>
-            <expression>{Template_Ceph:ceph.fullratio.timeleft(604800,,0)}&lt;1w</expression>
+            <expression>{Template Ceph:ceph.fullratio.timeleft(604800,,0)}&lt;1w</expression>
             <recovery_mode>0</recovery_mode>
             <recovery_expression/>
             <name>Ceph Cluster Used Space will reach FullRatio Mark less than in a week</name>
@@ -2627,19 +2631,19 @@ Full cluster issues usually arise when testing how Ceph handles an OSD failure o
             <dependencies>
                 <dependency>
                     <name>Ceph Cluster Used Space will reach FullRatio Mark less than in a day</name>
-                    <expression>{Template_Ceph:ceph.fullratio.timeleft(86400,,0)}&lt;1d</expression>
+                    <expression>{Template Ceph:ceph.fullratio.timeleft(86400,,0)}&lt;1d</expression>
                     <recovery_expression/>
                 </dependency>
                 <dependency>
                     <name>Ceph Cluster Used Space will reach FullRatio Mark less than in an hour</name>
-                    <expression>{Template_Ceph:ceph.fullratio.timeleft(3600,,0)}&lt;1h</expression>
+                    <expression>{Template Ceph:ceph.fullratio.timeleft(3600,,0)}&lt;1h</expression>
                     <recovery_expression/>
                 </dependency>
             </dependencies>
             <tags/>
         </trigger>
         <trigger>
-            <expression>{Template_Ceph:ceph.nearfullratio.timeleft(86400,,0)}&lt;1d</expression>
+            <expression>{Template Ceph:ceph.nearfullratio.timeleft(86400,,0)}&lt;1d</expression>
             <recovery_mode>0</recovery_mode>
             <recovery_expression/>
             <name>Ceph Cluster Used Space will reach NearFullRatio Mark less than in a day</name>
@@ -2654,14 +2658,14 @@ Full cluster issues usually arise when testing how Ceph handles an OSD failure o
             <dependencies>
                 <dependency>
                     <name>Ceph Cluster Used Space will reach NearFullRatio Mark less than in an hour</name>
-                    <expression>{Template_Ceph:ceph.nearfullratio.timeleft(3600,,0)}&lt;1h</expression>
+                    <expression>{Template Ceph:ceph.nearfullratio.timeleft(3600,,0)}&lt;1h</expression>
                     <recovery_expression/>
                 </dependency>
             </dependencies>
             <tags/>
         </trigger>
         <trigger>
-            <expression>{Template_Ceph:ceph.nearfullratio.timeleft(2592000,,0)}&lt;30d</expression>
+            <expression>{Template Ceph:ceph.nearfullratio.timeleft(2592000,,0)}&lt;30d</expression>
             <recovery_mode>0</recovery_mode>
             <recovery_expression/>
             <name>Ceph Cluster Used Space will reach NearFullRatio Mark less than in a month</name>
@@ -2676,24 +2680,24 @@ Full cluster issues usually arise when testing how Ceph handles an OSD failure o
             <dependencies>
                 <dependency>
                     <name>Ceph Cluster Used Space will reach NearFullRatio Mark less than in a day</name>
-                    <expression>{Template_Ceph:ceph.nearfullratio.timeleft(86400,,0)}&lt;1d</expression>
+                    <expression>{Template Ceph:ceph.nearfullratio.timeleft(86400,,0)}&lt;1d</expression>
                     <recovery_expression/>
                 </dependency>
                 <dependency>
                     <name>Ceph Cluster Used Space will reach NearFullRatio Mark less than in an hour</name>
-                    <expression>{Template_Ceph:ceph.nearfullratio.timeleft(3600,,0)}&lt;1h</expression>
+                    <expression>{Template Ceph:ceph.nearfullratio.timeleft(3600,,0)}&lt;1h</expression>
                     <recovery_expression/>
                 </dependency>
                 <dependency>
                     <name>Ceph Cluster Used Space will reach NearFullRatio Mark less than in a week</name>
-                    <expression>{Template_Ceph:ceph.nearfullratio.timeleft(604800,,0)}&lt;1w</expression>
+                    <expression>{Template Ceph:ceph.nearfullratio.timeleft(604800,,0)}&lt;1w</expression>
                     <recovery_expression/>
                 </dependency>
             </dependencies>
             <tags/>
         </trigger>
         <trigger>
-            <expression>{Template_Ceph:ceph.nearfullratio.timeleft(3600,,0)}&lt;1h</expression>
+            <expression>{Template Ceph:ceph.nearfullratio.timeleft(3600,,0)}&lt;1h</expression>
             <recovery_mode>0</recovery_mode>
             <recovery_expression/>
             <name>Ceph Cluster Used Space will reach NearFullRatio Mark less than in an hour</name>
@@ -2709,7 +2713,7 @@ Full cluster issues usually arise when testing how Ceph handles an OSD failure o
             <tags/>
         </trigger>
         <trigger>
-            <expression>{Template_Ceph:ceph.nearfullratio.timeleft(604800,,0)}&lt;1w</expression>
+            <expression>{Template Ceph:ceph.nearfullratio.timeleft(604800,,0)}&lt;1w</expression>
             <recovery_mode>0</recovery_mode>
             <recovery_expression/>
             <name>Ceph Cluster Used Space will reach NearFullRatio Mark less than in a week</name>
@@ -2724,12 +2728,12 @@ Full cluster issues usually arise when testing how Ceph handles an OSD failure o
             <dependencies>
                 <dependency>
                     <name>Ceph Cluster Used Space will reach NearFullRatio Mark less than in a day</name>
-                    <expression>{Template_Ceph:ceph.nearfullratio.timeleft(86400,,0)}&lt;1d</expression>
+                    <expression>{Template Ceph:ceph.nearfullratio.timeleft(86400,,0)}&lt;1d</expression>
                     <recovery_expression/>
                 </dependency>
                 <dependency>
                     <name>Ceph Cluster Used Space will reach NearFullRatio Mark less than in an hour</name>
-                    <expression>{Template_Ceph:ceph.nearfullratio.timeleft(3600,,0)}&lt;1h</expression>
+                    <expression>{Template Ceph:ceph.nearfullratio.timeleft(3600,,0)}&lt;1h</expression>
                     <recovery_expression/>
                 </dependency>
             </dependencies>
@@ -2763,7 +2767,7 @@ Full cluster issues usually arise when testing how Ceph handles an OSD failure o
                     <calc_fnc>2</calc_fnc>
                     <type>0</type>
                     <item>
-                        <host>Template_Ceph</host>
+                        <host>Template Ceph</host>
                         <key>ceph.rdbps</key>
                     </item>
                 </graph_item>
@@ -2775,7 +2779,7 @@ Full cluster issues usually arise when testing how Ceph handles an OSD failure o
                     <calc_fnc>2</calc_fnc>
                     <type>0</type>
                     <item>
-                        <host>Template_Ceph</host>
+                        <host>Template Ceph</host>
                         <key>ceph.wrbps</key>
                     </item>
                 </graph_item>
@@ -2787,7 +2791,7 @@ Full cluster issues usually arise when testing how Ceph handles an OSD failure o
                     <calc_fnc>2</calc_fnc>
                     <type>0</type>
                     <item>
-                        <host>Template_Ceph</host>
+                        <host>Template Ceph</host>
                         <key>ceph.opsread</key>
                     </item>
                 </graph_item>
@@ -2819,7 +2823,7 @@ Full cluster issues usually arise when testing how Ceph handles an OSD failure o
                     <calc_fnc>2</calc_fnc>
                     <type>0</type>
                     <item>
-                        <host>Template_Ceph</host>
+                        <host>Template Ceph</host>
                         <key>ceph.degraded_percent</key>
                     </item>
                 </graph_item>
@@ -2851,7 +2855,7 @@ Full cluster issues usually arise when testing how Ceph handles an OSD failure o
                     <calc_fnc>2</calc_fnc>
                     <type>0</type>
                     <item>
-                        <host>Template_Ceph</host>
+                        <host>Template Ceph</host>
                         <key>ceph.recovering</key>
                     </item>
                 </graph_item>
@@ -2863,7 +2867,7 @@ Full cluster issues usually arise when testing how Ceph handles an OSD failure o
                     <calc_fnc>2</calc_fnc>
                     <type>0</type>
                     <item>
-                        <host>Template_Ceph</host>
+                        <host>Template Ceph</host>
                         <key>ceph.remapped</key>
                     </item>
                 </graph_item>
@@ -2875,7 +2879,7 @@ Full cluster issues usually arise when testing how Ceph handles an OSD failure o
                     <calc_fnc>2</calc_fnc>
                     <type>0</type>
                     <item>
-                        <host>Template_Ceph</host>
+                        <host>Template Ceph</host>
                         <key>ceph.peering</key>
                     </item>
                 </graph_item>
@@ -2907,7 +2911,7 @@ Full cluster issues usually arise when testing how Ceph handles an OSD failure o
                     <calc_fnc>2</calc_fnc>
                     <type>0</type>
                     <item>
-                        <host>Template_Ceph</host>
+                        <host>Template Ceph</host>
                         <key>ceph.osd_up</key>
                     </item>
                 </graph_item>
@@ -2919,7 +2923,7 @@ Full cluster issues usually arise when testing how Ceph handles an OSD failure o
                     <calc_fnc>2</calc_fnc>
                     <type>0</type>
                     <item>
-                        <host>Template_Ceph</host>
+                        <host>Template Ceph</host>
                         <key>ceph.osd_in</key>
                     </item>
                 </graph_item>
@@ -2951,7 +2955,7 @@ Full cluster issues usually arise when testing how Ceph handles an OSD failure o
                     <calc_fnc>2</calc_fnc>
                     <type>0</type>
                     <item>
-                        <host>Template_Ceph</host>
+                        <host>Template Ceph</host>
                         <key>ceph.active</key>
                     </item>
                 </graph_item>
@@ -2963,7 +2967,7 @@ Full cluster issues usually arise when testing how Ceph handles an OSD failure o
                     <calc_fnc>2</calc_fnc>
                     <type>0</type>
                     <item>
-                        <host>Template_Ceph</host>
+                        <host>Template Ceph</host>
                         <key>ceph.clean</key>
                     </item>
                 </graph_item>
@@ -2995,7 +2999,7 @@ Full cluster issues usually arise when testing how Ceph handles an OSD failure o
                     <calc_fnc>2</calc_fnc>
                     <type>0</type>
                     <item>
-                        <host>Template_Ceph</host>
+                        <host>Template Ceph</host>
                         <key>ceph.degraded</key>
                     </item>
                 </graph_item>
@@ -3007,7 +3011,7 @@ Full cluster issues usually arise when testing how Ceph handles an OSD failure o
                     <calc_fnc>2</calc_fnc>
                     <type>0</type>
                     <item>
-                        <host>Template_Ceph</host>
+                        <host>Template Ceph</host>
                         <key>ceph.incomplete</key>
                     </item>
                 </graph_item>
@@ -3019,7 +3023,7 @@ Full cluster issues usually arise when testing how Ceph handles an OSD failure o
                     <calc_fnc>2</calc_fnc>
                     <type>0</type>
                     <item>
-                        <host>Template_Ceph</host>
+                        <host>Template Ceph</host>
                         <key>ceph.inconsistent</key>
                     </item>
                 </graph_item>
@@ -3031,7 +3035,7 @@ Full cluster issues usually arise when testing how Ceph handles an OSD failure o
                     <calc_fnc>2</calc_fnc>
                     <type>0</type>
                     <item>
-                        <host>Template_Ceph</host>
+                        <host>Template Ceph</host>
                         <key>ceph.down</key>
                     </item>
                 </graph_item>

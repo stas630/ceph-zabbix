@@ -1,22 +1,24 @@
 #!/bin/sh
 #
-# ceph-data.sh <mons|osds|pools|health> [client_hostname_in_zabbix]
-# 20171201 v1.0 stas630
-# sudo apt-get install jq
+# ceph-data.sh <cluster_name> <mons|osds|pools|health> [client_hostname_in_zabbix]
+# 20171201-20171207 v1.1 stas630
+#
 #
 ZBX_CONFIG_AGENT="/etc/zabbix/zabbix_agentd.conf"
 # Uncomment if need log
 #LOG="/var/log/zabbix-agent/ceph.log"
 #
 #
-HOSTNAME=$2
+CLUSTER_NAME=$1
+OPERATION=$2
+HOSTNAME=$3
 
 export PATH=/bin:/usr/bin
 TMPS=`mktemp -t zbx-ceph.XXXXXXXXXXX`
 
-case $1 in
+case ${OPERATION} in
   osds)
-    ceph osd df tree -f json |\
+    ceph --cluster ${CLUSTER_NAME} osd df tree -f json |\
       jq -r '(.nodes[]|select(.type=="osd")|"\(.name) \(.kb_avail / 1048576)"),
         "ceph.spaceavail \(.summary.total_kb_avail / 1048576)",
         "ceph.spacetotal \(.summary.total_kb / 1048576)"'|\
@@ -32,13 +34,13 @@ case $1 in
           }
         }
         END{ print "]}" }'
-    ceph osd dump -f json |\
+    ceph --cluster ${CLUSTER_NAME} osd dump -f json |\
       jq -r '(.osds[]| "'${HOSTNAME}' ceph.osdstatus[osd.\(.osd)] \(.up)"),
         "'${HOSTNAME}' ceph.osdcount \(.max_osd)"' >>${TMPS}
   ;;
 
   pools)
-    ceph df -f json |\
+    ceph --cluster ${CLUSTER_NAME} df -f json |\
       jq -r '.pools[]|"\(.name) \(.stats.max_avail / 1073741824)"'|\
       awk '
         BEGIN{ print "{\"data\":[" }
@@ -51,7 +53,7 @@ case $1 in
   ;;
 
   mons)
-    ceph mon dump 2>/dev/null -f json |\
+    ceph --cluster ${CLUSTER_NAME} mon dump 2>/dev/null -f json |\
       jq -r  'reduce .mons[] as $mon ({rquorum:.quorum,rmons:{}}; . + {rmons:(.rmons+ { ($mon.name):(.rquorum| if index($mon.rank)==null then 0 else 1 end) })} ) |.rmons|to_entries[]|"\(.key) \(.value)"'|\
       awk '
         BEGIN{ print "{\"data\":[" }
@@ -64,7 +66,7 @@ case $1 in
   ;;
 
   health)
-    ceph status -f json |\
+    ceph --cluster ${CLUSTER_NAME} status -f json |\
       jq -r '
         "\(if .health.status =="HEALTH_OK" then 1 elif .health.status =="HEALTH_WARN" then 2 else 0 end)",
         "ceph.moncount \(.monmap.mons|length)",

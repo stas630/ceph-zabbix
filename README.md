@@ -7,7 +7,7 @@ Installation
 ============
 
 Install jq:
-      sudo apt install jq
+      sudo apt install jq zabbix-sender
 
 Copy the scripts, zabbix_agentd.conf.d into /etc/zabbix/
 
